@@ -1,23 +1,24 @@
 version: 4
 shared:
-    environment:
-        NODE_ENV: test
-    settings:
-        email:
-            addresses: [junaid.hussain@yahooinc.com]
-            statuses: [SUCESS, FAILURE]
-    annotations:
-        screwdriver.cd/cpu: LOW
-        screwdriver.cd/ram: LOW
+  environment:
+    NODE_ENV: test
+  settings:
+    email:
+      addresses:
+        - junaid.hussain@yahooinc.com
+      statuses:
+        - SUCESS
+        - FAILURE
+  annotations:
+    screwdriver.cd/cpu: LOW
+    screwdriver.cd/ram: LOW
 jobs:
   main:
-      requires: [~pr, ~commit]
-      steps:
-        - check: systemctl status yamas-agent
-        - restart: sudo systemctl start yamas-agent
-
-
-  second_job:
-      requires: [main]
-      steps:
-        - run_script: ./my_script.sh
+    requires:
+      - ~pr
+      - ~commit
+    steps:
+      - run:
+          commands:
+            - chmod +x ./my_script.sh
+            - ./my_script.sh
